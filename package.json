@@ -1,18 +1,17 @@
 {
-  "name": "electron-react",
+  "name": "is-security",
   "version": "0.1.0",
   "private": true,
+  "author": "George Pustovit, TR-91 student",
   "dependencies": {
     "@electron/remote": "^1.0.2",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "bootstrap": "^5.0.0-beta1",
     "electron-is-dev": "^1.2.0",
     "react": "^17.0.1",
+    "react-bootstrap": "^1.6.4",
     "react-dom": "^17.0.1",
+    "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.1",
-    "web-vitals": "^0.2.4"
+    "react-toastify": "^8.0.3"
   },
   "main": "public/main.js",
   "homepage": "./",
@@ -21,8 +20,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "electron:serve": "concurrently -k \"cross-env BROWSER=none yarn start\" \"yarn electron:start\"",
-    "electron:build": "yarn build && electron-builder -c.extraMetadata.main=build/main.js",
+    "electron:serve": "concurrently -k \"SET BROWSER=none&&npm run start\" \"npm run electron:start\"",
+    "electron:build": "npm run build && electron-builder -c.extraMetadata.main=build/main.js",
     "electron:start": "wait-on tcp:3000 && electron ."
   },
   "build": {

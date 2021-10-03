@@ -1,64 +1,29 @@
-import { useState, useMemo } from 'react'
-import { FilesViewer } from './FilesViewer'
+import React from 'react'
+import { Redirect, Route, Switch } from 'react-router-dom'
+import CaesarCipher from './components/CaesarCipher'
+import TrithemiusCipher from './components/TrithemiusCipher'
+import AppHeader from './components/AppHeader'
+import { Container } from 'react-bootstrap'
+import 'react-toastify/dist/ReactToastify.css';
+import { Slide, ToastContainer } from 'react-toastify'
 
-const fs = window.require('fs')
-const pathModule = window.require('path')
+export const alphabetEN = 'abcdefghijklmnopqrstuvwxyz'
+export const alphabetUA = 'абвгґдеєжзиіїйклмнопрстуфхцчшщьюя'
+export const numbers = '0123456789'
 
-const { app } = window.require('@electron/remote')
-
-const formatSize = size => {
-  var i = Math.floor(Math.log(size) / Math.log(1024))
-  return (
-    (size / Math.pow(1024, i)).toFixed(2) * 1 +
-    ' ' +
-    ['B', 'kB', 'MB', 'GB', 'TB'][i]
-  )
-}
-
-function App() {
-  const [path, setPath] = useState(app.getAppPath())
-
-  const files = useMemo(
-    () =>
-      fs
-        .readdirSync(path)
-        .map(file => {
-          const stats = fs.statSync(pathModule.join(path, file))
-          return {
-            name: file,
-            size: stats.isFile() ? formatSize(stats.size ?? 0) : null,
-            directory: stats.isDirectory()
-          }
-        })
-        .sort((a, b) => {
-          if (a.directory === b.directory) {
-            return a.name.localeCompare(b.name)
-          }
-          return a.directory ? -1 : 1
-        }),
-    [path]
-  )
-
-  const onBack = () => setPath(pathModule.dirname(path))
-  const onOpen = folder => setPath(pathModule.join(path, folder))
-
-  const [searchString, setSearchString] = useState('')
-  const filteredFiles = files.filter(s => s.name.startsWith(searchString))
-
-  return (
-    <div className="container mt-2">
-      <h4>{path}</h4>
-      <div className="form-group mt-4 mb-2">
-        <input
-          value={searchString}
-          onChange={event => setSearchString(event.target.value)}
-          className="form-control form-control-sm"
-          placeholder="File search"
-        />
-      </div>
-      <FilesViewer files={filteredFiles} onBack={onBack} onOpen={onOpen} />
-    </div>
-  )
-}
+const App = () => (
+  <>
+    <AppHeader/>
+    <Container>
+      <Switch>
+        <Route path="/lab1" component={CaesarCipher}/>
+        <Route path="/lab2" component={TrithemiusCipher}/>
+      </Switch>
+    </Container>
+    <ToastContainer
+      transition={Slide}
+    />
+  </>
+)
 
 export default App
